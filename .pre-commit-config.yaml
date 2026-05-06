@@ -1,0 +1,9 @@
+repos:
+- repo: local
+  hooks:
+    - id: terraform-fmt-validate
+      name: Terraform fmt & validate
+      entry: bash -lc "terraform -chdir=terraform fmt -check && terraform -chdir=terraform init -backend=false -no-color && terraform -chdir=terraform validate -no-color"
+      language: system
+      always_run: true
+      files: ".*\\.(tf|tfvars)$"
