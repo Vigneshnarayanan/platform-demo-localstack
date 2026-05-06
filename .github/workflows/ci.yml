@@ -26,13 +26,18 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: '1.6.7'
+
       - name: Start LocalStack (pinned)
         run: |
           docker pull localstack/localstack:0.14.3
           docker run -d --name localstack -p 4566:4566 localstack/localstack:0.14.3
           # wait for health endpoint
           for i in {1..30}; do
-            curl -sS http://localhost:4566/health && break || sleep 2
+            curl -fsS http://localhost:4566/health && echo "LocalStack ready" && break || sleep 2
           done
 
       - name: Setup Python
